@@ -58,7 +58,6 @@ Each rule uses advanced behavioral analysis:
 - **Impossible Travel Detection** — Haversine distance + velocity calculation between login locations
 - **Request Timing Entropy** — Standard deviation of request intervals detects bot-like regularity
 
-- **Request Timing Entropy** — Standard deviation of request intervals detects bot-like regularity
 ---
 
 ## 🔒 Security & Reliability Features
@@ -129,6 +128,7 @@ docker-compose -f docker-compose.prod.yml up --build -d
 ### Manual Installation
 
 **Requirements:**
+
 - PHP 8.1+ with extensions: `PDO_PGSQL`, `cURL`
 - PostgreSQL 12+
 - Apache with `mod_rewrite` and `mod_headers`
