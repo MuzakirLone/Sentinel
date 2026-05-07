@@ -30,7 +30,7 @@
 Sentinel is **mission-critical security infrastructure**. Its interface must project four qualities simultaneously:
 
 | Quality | What it means in practice |
-|---|---|
+| --- | --- |
 | **Authority** | Looks like enterprise tooling an analyst would trust under pressure |
 | **Precision** | Every number is readable, every status is unambiguous at a glance |
 | **Calm vigilance** | High information density without cognitive overwhelm |
@@ -59,8 +59,7 @@ The wordmark "Sentinel" uses a CSS gradient text technique:
 background: linear-gradient(135deg, #ffffff, #22d3ee);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-```
-
+```text
 This is the **only decorative text treatment** in the entire product. All other text uses solid color values.
 
 ### Voice & Tone (UI Copy)
@@ -78,48 +77,44 @@ This is the **only decorative text treatment** in the entire product. All other 
 
 The background is **never pure black**. The deepest surface is `#0a0e1a` — a dark indigo-navy that keeps the interface from feeling harsh under ambient light.
 
-```
+```text
 #060810  surface-container-lowest  (almost never used — extreme depth)
 #0a0e1a  background / surface-dim  (page canvas)
 #0f1423  surface / sidebar         (primary surfaces)
 #151b2e  surface-container         (inputs, code blocks)
 #1a2238  surface-container-high    (slightly elevated panels)
 #202840  surface-container-highest (maximum non-card elevation)
-```
-
+```text
 Glass surfaces use semi-transparent fills over the dark canvas:
 
-```
+```text
 rgba(20, 27, 48, 0.70)   Level 1 — standard card
 rgba(30, 40, 70, 0.80)   Level 2 — hovered card
 rgba(15, 20, 35, 0.90)   Level 3 — modal / sticky header
-```
-
+```text
 ### Text Colors
 
-```
+```text
 #ffffff   on-surface-bright   (page titles, critical labels)
 #e8eaed   on-surface          (primary body text)
 #9aa0b4   on-surface-variant  (secondary text, table cells)
 #5a6178   on-surface-muted    (table headers, timestamps, placeholders)
-```
-
+```text
 Minimum contrast ratio for `on-surface-muted` against `surface`: **4.5:1** — do not make text any dimmer than this value.
 
 ### Brand & Accent
 
-```
+```text
 #6366f1   primary             (buttons, active nav, focus rings, glow source)
 #22d3ee   secondary           (metric highlights, brand gradient partner)
 #a78bfa   tertiary            (KPI accent, avatar gradient fills)
-```
-
+```text
 ### Semantic Status Palette
 
 Risk levels form a strict five-step traffic-light scale. These colors must not be reused for non-risk purposes.
 
 | Token | Hex | Usage |
-|---|---|---|
+| --- | --- | --- |
 | `risk-low` | `#34d399` | 0–20 score |
 | `risk-moderate` | `#60a5fa` | 21–40 score |
 | `risk-elevated` | `#fbbf24` | 41–60 score |
@@ -129,7 +124,7 @@ Risk levels form a strict five-step traffic-light scale. These colors must not b
 Status labels for user accounts:
 
 | Token | Hex | State |
-|---|---|---|
+| --- | --- | --- |
 | `status-active` | `#34d399` | Normal operation |
 | `status-flagged` | `#fbbf24` | Pending manual review |
 | `status-suspended` | `#ef4444` | Auto-suspended by rule engine |
@@ -140,12 +135,11 @@ Status labels for user accounts:
 
 ### Border & Outline
 
-```
+```text
 rgba(255, 255, 255, 0.06)    outline-variant   (default card/input border)
 rgba(99, 102, 241, 0.15)     outline           (default interactive border)
 rgba(99, 102, 241, 0.30)     outline-hover     (hover / focus border)
-```
-
+```text
 ### Ambient Glow
 
 A single `600×600px` radial gradient fixed at the top-right of the viewport viewport provides the sole "light source" for the entire app:
@@ -158,8 +152,7 @@ right: -100px;
 pointer-events: none;
 opacity: 0.5;
 z-index: 0;
-```
-
+```text
 This element must not appear behind the sidebar. It is scoped to `.main-content` only.
 
 ---
@@ -178,7 +171,7 @@ No third typeface is permitted. Adding a display font would undermine the precis
 ### Type Scale
 
 | Token | Family | Size | Weight | Line Height | Tracking | Usage |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | `display-lg` | Inter | 32px | 800 | 40px | −0.03em | Hero numbers, empty state headings |
 | `headline-lg` | Inter | 24px | 700 | 32px | −0.02em | Page titles |
 | `headline-md` | Inter | 20px | 700 | 28px | −0.02em | Section headings |
@@ -210,28 +203,26 @@ No third typeface is permitted. Adding a display font would undermine the precis
 
 All spacing derives from a **4px base unit** — more compact than the standard 8px, enabling the information density a security dashboard requires.
 
-```
+```text
 xs:   4px
 sm:   8px
 md:   12px
 lg:   16px
 xl:   24px
 2xl:  32px
-```
-
+```text
 ### Layout Shell
 
-```
+```text
 Sidebar:         260px fixed-left, full-height, z-index: 40
 Main content:    calc(100vw - 260px), scrollable
 Page header:     sticky top-0, z-index: 50, height: ~72px
 Page body:       padding: 24px 32px
-```
-
+```text
 ### Grid Systems
 
 | Context | Grid definition |
-|---|---|
+| --- | --- |
 | KPI row | `repeat(auto-fit, minmax(180px, 1fr))` |
 | Charts row — primary | `2fr 1fr` |
 | Charts row — secondary | `1fr 1fr` |
@@ -253,7 +244,7 @@ Page body:       padding: 24px 32px
 The glass stack has four effective levels. Treat any surface that doesn't match one of these as a design error.
 
 | Level | Use case | Background | Blur | Border |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **0 — Canvas** | Page background | `#0a0e1a` | none | none |
 | **1 — Card** | KPI cards, data cards, sidebar | `rgba(20,27,48,0.70)` | `blur(12px)` | `rgba(255,255,255,0.06)` |
 | **2 — Elevated** | Hovered / active cards | `rgba(30,40,70,0.80)` | `blur(20px)` | `rgba(99,102,241,0.30)` |
@@ -270,7 +261,7 @@ Modal overlay backdrop: `rgba(0,0,0,0.70)` — dark enough to focus attention, n
 The shape language is **consistently rounded but never pill-shaped at the structural level** — pills are reserved for badges to create clear component disambiguation.
 
 | Radius | Value | Applied to |
-|---|---|---|
+| --- | --- | --- |
 | `sm` | 6px | Buttons, inputs, nav items, pagination, dropdowns |
 | `DEFAULT` | 8px | General-purpose containers |
 | `md` | 10px | Code blocks, KPI icon containers, sidebar brand icon |
@@ -287,7 +278,7 @@ Never mix `lg` and `sm` radius on the same component (e.g., a button inside a ca
 Use **Lucide Icons** (stroke-width: `1.5px`, size: `16px` default). This weight is intentionally lighter than the bold UI text — icons support, they do not compete.
 
 | Context | Icon size | Color |
-|---|---|---|
+| --- | --- | --- |
 | Nav items | 16px | `on-surface-variant` → `primary` on active |
 | KPI card icon | 20px | Semantic accent color, inside `40×40px` tinted container |
 | Table action buttons | 14px | `on-surface-variant` |
@@ -311,7 +302,7 @@ All transitions use **ease-out cubic-bezier `(0.4, 0, 0.2, 1)`** — snappy entr
 ### Timing Tiers
 
 | Tier | Duration | Applied to |
-|---|---|---|
+| --- | --- | --- |
 | `fast` | 150ms | Nav hover, button hover, row hover, badge appearance, tooltip show |
 | `base` | 250ms | Card hover lift, border transitions, modal open/close, input focus |
 | `slow` | 400ms | Risk bar fill animation (on page load/data change), chart enter |
@@ -326,8 +317,7 @@ Cards, KPI tiles, and table rows animate in on page load:
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-```
-
+```text
 Stagger delay: `50ms × element index`. Maximum stagger: `300ms` (cap after 6 elements).
 
 ### Live Data Updates
@@ -388,7 +378,7 @@ Each card occupies one grid cell in the auto-fit KPI row.
 **The six KPI cards and their accent colors:**
 
 | KPI | Accent |
-|---|---|
+| --- | --- |
 | Total Events | `primary` indigo |
 | Active Users | `secondary` cyan |
 | Flagged Accounts | `warning` amber |
@@ -421,13 +411,12 @@ Inline action buttons appear on row hover only (`opacity: 0 → 1` on `fast` tim
 
 The risk score trio appears in table rows, user profile headers, and event detail panels:
 
-```
+```text
 [78]  [████████░░]  [HIGH]
  ↑          ↑         ↑
 mono-md   70×6px    badge-pill
 colored   progress  semantic bg
-```
-
+```text
 - Numeric value: `mono-md`, colored by risk level token
 - Progress bar: `70px × 6px`, `border-radius: 3px`, track `rgba(255,255,255,0.06)`, fill color = risk level token
 - Badge: pill with `15% opacity tint` background + full-saturation text
@@ -444,14 +433,13 @@ font-weight: 600;
 letter-spacing: 0.03em;
 background: rgba(<semantic-color-rgb>, 0.15);
 color: <semantic-color>;
-```
-
+```text
 Never use a solid filled badge background — it creates false visual weight.
 
 ### Buttons
 
 | Variant | Background | Text | Border |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Primary | `#6366f1` | white | none |
 | Danger | `rgba(239,68,68,0.15)` | `#fb7185` | `rgba(239,68,68,0.20)` |
 | Success | `rgba(52,211,153,0.15)` | `#34d399` | `rgba(52,211,153,0.20)` |
@@ -463,7 +451,7 @@ Primary button hover: `background: #5558e6` + `box-shadow: 0 0 16px rgba(99,102,
 
 ### Form Inputs
 
-```
+```text
 background:    #151b2e
 border:        1px solid rgba(255,255,255,0.06)
 border-radius: 6px
@@ -474,8 +462,7 @@ font-size:     14px
 :focus
   border:     1px solid #6366f1
   box-shadow: 0 0 0 3px rgba(99,102,241,0.30)
-```
-
+```text
 The focus ring matches the brand glow — this is intentional continuity, not coincidence.
 
 Placeholder text: `on-surface-muted (#5a6178)`.
@@ -484,14 +471,13 @@ Search inputs prepend a `search` Lucide icon at `16px` inside left padding.
 
 ### Toggle Switch
 
-```
+```text
 width: 36px  height: 20px
 track active:   #6366f1
 track inactive: rgba(255,255,255,0.10)
 thumb:          #ffffff, 16×16px, border-radius: 50%
 transition:     base (250ms)
-```
-
+```text
 Never use a toggle for destructive actions — use a confirmation modal instead.
 
 ### Timeline (User Activity)
@@ -524,7 +510,7 @@ Event detail: `body-sm`, `on-surface-variant`, collapsible with `▶ / ▼` disc
 
 ### Code Blocks
 
-```
+```text
 background:    #151b2e
 border:        1px solid rgba(255,255,255,0.06)
 border-radius: 10px
@@ -533,12 +519,11 @@ font-size:     12px
 line-height:   1.8
 padding:       16px
 overflow-x:    auto
-```
-
+```text
 Syntax color mapping (used only in code blocks):
 
 | Token type | Color |
-|---|---|
+| --- | --- |
 | Commands / keywords | `#fbbf24` (amber) |
 | Strings / values | `#34d399` (emerald) |
 | JSON data / objects | `#22d3ee` (cyan) |
@@ -551,11 +536,10 @@ This is the **only location in the UI** where multiple accent colors co-exist in
 
 Horizontal card layout:
 
-```
+```text
 [Rule name]   [Active/Disabled badge]        [Weight input]  [Toggle]
 [Category]    [Trigger count: 142 this week]
-```
-
+```text
 - Rule name: `title-md`
 - Category: `label-sm` + icon + `on-surface-muted`
 - Trigger count: `mono-sm`, `on-surface-variant`
@@ -571,15 +555,14 @@ Rules grouped under category headings (Authentication, Automation, Geography, Id
 ::-webkit-scrollbar-track  { background: #0a0e1a; }
 ::-webkit-scrollbar-thumb  { background: rgba(99,102,241,0.15); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
-```
-
+```text
 ---
 
 ## 11. Page Layouts
 
 ### Dashboard (Overview)
 
-```
+```text
 [Page header — sticky]
 [KPI grid — 6 cards, auto-fit]
 [Charts row 1 — 2fr | 1fr]
@@ -588,20 +571,18 @@ Rules grouped under category headings (Authentication, Automation, Geography, Id
 [Charts row 2 — 1fr | 1fr]
   Left: Events by type (bar chart)
   Right: Riskiest users (compact table, top 5)
-```
-
+```text
 ### User List
 
-```
+```text
 [Page header with search + filter bar]
 [Data table — full width]
   Columns: User ID · Email · Risk Score · Status · Last Seen · Events · Actions
 [Pagination footer]
-```
-
+```text
 ### User Profile (Single User View)
 
-```
+```text
 [Profile header card — full width]
   Avatar · Name / ID · Status badge · Risk score trio · Meta fields grid
 [Content grid — 2fr | 1fr]
@@ -609,52 +590,46 @@ Rules grouped under category headings (Authentication, Automation, Geography, Id
   Right:
     Top: Risk breakdown (per-rule scores)
     Bottom: Device / IP history
-```
-
+```text
 ### Event Log
 
-```
+```text
 [Page header with date range picker + filter chips]
 [Data table — full width]
   Columns: Time · Event Type · User ID · IP · Risk Score · Rules Triggered
 [Expandable row detail: full event JSON in code block]
 [Pagination footer]
-```
-
+```text
 ### Review Queue
 
-```
+```text
 [Page header + status filter tabs (Flagged | Suspended | All)]
 [Data table]
   Columns: User · Risk · Reason · Triggered At · Actions (Resolve / Dismiss / Suspend)
-```
-
+```text
 ### Rule Engine
 
-```
+```text
 [Page header with "New Rule" button]
 [Category sections — grouped, collapsible]
   Each section: header label + rule cards list
-```
-
+```text
 ### Settings
 
-```
+```text
 [Tab nav: General | API Keys | Integrations | Danger Zone]
 [Tab content area — single column, max-width: 640px]
-```
-
+```text
 ### Authentication Pages (Login / Signup / Forgot Password)
 
-```
+```text
 [Full-bleed dark background with ambient glow]
 [Centered card — max-width: 420px, Level 1 glass]
   Brand mark + wordmark
   Form fields
   Primary CTA button
   Ghost link (e.g., "Forgot password?")
-```
-
+```text
 No sidebar. No nav. Brand continuity maintained through ambient glow and color system.
 
 ---
@@ -670,8 +645,7 @@ Chart.defaults.color = '#9aa0b4';         // axis labels
 Chart.defaults.borderColor = 'rgba(255,255,255,0.06)'; // grid lines
 Chart.defaults.font.family = 'Inter';
 Chart.defaults.font.size = 11;
-```
-
+```text
 ### Events Over Time (Line Chart)
 
 - Line color: `#6366f1`
@@ -711,8 +685,7 @@ plugins: {
     cornerRadius: 8,
   }
 }
-```
-
+```text
 ---
 
 ## 13. Interaction States
@@ -720,7 +693,7 @@ plugins: {
 Every interactive element must implement all applicable states. Missing states are treated as incomplete implementations.
 
 | State | Visual treatment |
-|---|---|
+| --- | --- |
 | **Default** | Base design token values |
 | **Hover** | Background tint or `translateY(-2px)` + border brightens to `outline-hover` |
 | **Focus-visible** | `box-shadow: 0 0 0 3px rgba(99,102,241,0.30)` — keyboard nav only, not on click |
@@ -734,13 +707,12 @@ Every interactive element must implement all applicable states. Missing states a
 
 Every table and data region must have a designed empty state:
 
-```
+```text
 [Icon — 32px, on-surface-muted]
 [Heading — title-md, on-surface]
 [Diagnostic hint — body-sm, on-surface-variant]
 [Optional: CTA button if action would resolve the empty state]
-```
-
+```text
 Example: Events table empty state: `"No events ingested yet" / "Send your first event via the API or SDK to start monitoring." / [View API Docs button]`
 
 ### Error States
@@ -881,8 +853,9 @@ motion:
   slow:       "400ms cubic-bezier(0.4, 0, 0.2, 1)"
   page:       "300ms cubic-bezier(0.4, 0, 0.2, 1)"
   hover-lift: "translateY(-2px)"
-```
-
+```text
 ---
 
 *Last updated: 2026 · Sentinel Design System v2.0*
+
+
