@@ -34,6 +34,7 @@ Event tracking, threat detection, and risk scoring — all from a single lightwe
 
 ---
 
+<a id="what-is-sentinel"></a>
 ## 🛡 What is Sentinel?
 
 Sentinel is an enterprise-grade, self-hosted security framework engineered to **monitor, detect, and protect** web applications organically from threats, fraud, and account abuse in real-time.
