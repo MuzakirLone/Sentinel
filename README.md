@@ -12,6 +12,8 @@ Event tracking, threat detection, and risk scoring — all from a single lightwe
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](docker-compose.yml)
 
+---
+
 <details>
   <summary><b>Table of Contents</b></summary>
   <ul>
