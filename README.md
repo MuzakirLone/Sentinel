@@ -3,6 +3,7 @@
 <div align="center">
   <img src="assets/logo.png" alt="Sentinel Logo" width="300">
 </div>
+
 **Self-hosted security monitoring framework for web applications.**
 Event tracking, threat detection, and risk scoring — all from a single lightweight PHP/PostgreSQL application.
 
