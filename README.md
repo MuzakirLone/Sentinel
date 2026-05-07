@@ -45,6 +45,7 @@ After a quick Docker-based installation, the system is ready to ingest high-volu
 
 ---
 
+<a id="core-features"></a>
 ## ✨ Core Features
 
 | Feature | Description |
@@ -61,6 +62,7 @@ After a quick Docker-based installation, the system is ready to ingest high-volu
 
 ---
 
+<a id="preset-detection-rules"></a>
 ## 🎯 Preset Detection Rules
 
 | Rule | Category |
@@ -89,6 +91,7 @@ Rule configuration now includes **MITRE ATT&CK mappings** directly in the Rules 
 
 ---
 
+<a id="security--reliability-features"></a>
 ## 🔒 Security & Reliability Features
 
 Sentinel is built identically to modern enterprise infrastructure:
@@ -101,6 +104,7 @@ Sentinel is built identically to modern enterprise infrastructure:
 
 ---
 
+<a id="architecture-decision-records"></a>
 ## 🧠 Architecture Decision Records
 
 ### Why PHP?
@@ -131,6 +135,7 @@ For high-throughput deployments, Sentinel decouples ingestion from processing:
 
 ---
 
+<a id="quick-start"></a>
 ## 🚀 Quick Start
 
 ### Docker (Recommended)
@@ -187,6 +192,7 @@ docker-compose -f docker-compose.prod.yml up --build -d
 
 ---
 
+<a id="api-usage"></a>
 ## 📡 API Usage
 
 ### Sending Events
@@ -250,6 +256,7 @@ See [API.md](API.md) for complete API documentation.
 
 ---
 
+<a id="sdk-integration"></a>
 ## 🔧 SDK Integration
 
 ### PHP
@@ -279,6 +286,7 @@ See `sdks/` for complete SDK documentation with framework integration guides.
 
 ---
 
+<a id="architecture"></a>
 ## 🏗 Architecture
 
 ```mermaid
@@ -308,6 +316,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system design.
 
 ---
 
+<a id="attack-simulations"></a>
 ## 🔬 Attack Simulations
 
 Sentinel includes a suite of Python attack simulation scripts that validate detection capabilities against real-world attack patterns:
@@ -336,6 +345,7 @@ Each script shows real-time risk score escalation and triggered rules. See [simu
 
 ---
 
+<a id="resource-requirements"></a>
 ## 📋 Resource Requirements
 
 | Component | Minimum | Recommended |
@@ -346,18 +356,21 @@ Each script shows real-time risk score escalation and triggered rules. See [simu
 
 ---
 
+<a id="contributing"></a>
 ## 🤝 Contributing
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
+<a id="license"></a>
 ## 📄 License
 
 MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
+<a id="built-with"></a>
 ## 🔗 Built With
 
 - **PHP 8.1+** — Core application logic & risk engine
