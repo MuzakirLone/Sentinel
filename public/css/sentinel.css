@@ -504,6 +504,7 @@ body {
 .badge-elevated { background: rgba(251, 191, 36, 0.15); color: var(--risk-elevated); }
 .badge-high { background: rgba(251, 146, 60, 0.15); color: var(--risk-high); }
 .badge-critical { background: rgba(239, 68, 68, 0.15); color: var(--risk-critical); }
+.badge-medium { background: rgba(96, 165, 250, 0.12); color: var(--risk-moderate); }
 
 .badge-active { background: rgba(52, 211, 153, 0.15); color: var(--status-active); }
 .badge-flagged { background: rgba(251, 191, 36, 0.15); color: var(--status-flagged); }
@@ -512,6 +513,9 @@ body {
 .badge-pending { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
 .badge-resolved { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); }
 .badge-dismissed { background: rgba(90, 97, 120, 0.15); color: var(--text-muted); }
+.badge-open { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
+.badge-in_progress { background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); }
+.badge-in_case { background: rgba(167, 139, 250, 0.15); color: var(--accent-violet); }
 
 .event-badge {
     display: inline-flex;
@@ -1045,6 +1049,23 @@ body {
     font-size: 0.85rem;
     outline: none;
     cursor: pointer;
+}
+
+.filter-input {
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    min-width: 220px;
+}
+
+.filter-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-primary-glow);
 }
 
 .filter-select:focus {

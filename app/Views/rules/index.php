@@ -44,6 +44,13 @@
                             </div>
                             <div class="rule-desc"><?= htmlspecialchars($rule['description']) ?></div>
                             <div style="margin-top:6px;font-size:0.72rem;color:var(--text-muted)">
+                                <?php if (!empty($rule['mitre_technique_id'])): ?>
+                                    MITRE: <strong style="color:var(--text-secondary)"><?= htmlspecialchars($rule['mitre_technique_id']) ?></strong> — <?= htmlspecialchars($rule['mitre_technique']) ?> (<?= htmlspecialchars($rule['mitre_tactic']) ?>)
+                                <?php else: ?>
+                                    MITRE: <span style="color:var(--text-muted)">Unmapped</span>
+                                <?php endif; ?>
+                            </div>
+                            <div style="margin-top:6px;font-size:0.72rem;color:var(--text-muted)">
                                 Triggered: <strong style="color:var(--text-secondary)"><?= $triggerMap[$rule['slug']] ?? 0 ?></strong> times
                             </div>
                         </div>

@@ -18,7 +18,9 @@ Sentinel follows a **lightweight MVC architecture** built on pure PHP without he
 │                  │  UsersController                   │
 │                  │  EventsController                  │
 │                  │  ReviewController                  │
+│                  │  CasesController                   │
 │                  │  RulesController                   │
+│                  │  IntegrationsController            │
 │                  │  SettingsController                │
 │                  │  AuditController                   │
 ├──────────────────┴──────────────────────────────────┤
@@ -57,7 +59,7 @@ Client App → API Request → ApiKey Validation
     → Save rule results
     → Update user risk score
     → Auto-flag/suspend if thresholds exceeded
-    → Create review queue entry if needed
+    → Create alert queue entry if needed
     → Return response with risk assessment
 ```
 
@@ -85,7 +87,9 @@ The score calculator uses a **weighted category aggregation** approach:
 | `rules` | Rule configuration | slug, weight, is_enabled, config |
 | `rule_results` | Per-event evaluations | event_id, rule_id, score, triggered |
 | `risk_scores` | Aggregated per-user | overall_score, auth_score, factors |
-| `review_queue` | Flagged accounts | user_id, reason, priority, status |
+| `review_queue` | Alert queue | user_id, reason, priority, status |
+| `cases` | Investigation case management | title, status, priority, sla_due_at |
+| `case_events` | Case evidence timeline | case_id, event_id, note |
 | `audit_trail` | Field changes | entity_type, field_name, old_value, new_value |
 | `api_keys` | API authentication | key_hash, label, is_active |
 | `admin_users` | Dashboard accounts | email, password_hash |

@@ -37,9 +37,11 @@ class EventsController
         $offset = ($page - 1) * $limit;
         $eventType = $request->query('event_type');
         $userId = $request->query('user_id') ? (int) $request->query('user_id') : null;
+        $riskLevel = $request->query('risk_level');
+        $search = $request->query('search');
 
-        $events = $eventModel->getAll($limit, $offset, $eventType, $userId);
-        $total = $eventModel->count($eventType, $userId);
+        $events = $eventModel->getAll($limit, $offset, $eventType, $userId, $riskLevel, $search);
+        $total = $eventModel->count($eventType, $userId, $riskLevel, $search);
 
         $response->json([
             'events' => $events,

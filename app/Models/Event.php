@@ -43,7 +43,14 @@ class Event
         );
     }
 
-    public function getAll(int $limit = 50, int $offset = 0, ?string $eventType = null, ?int $userId = null): array
+    public function getAll(
+        int $limit = 50,
+        int $offset = 0,
+        ?string $eventType = null,
+        ?int $userId = null,
+        ?string $riskLevel = null,
+        ?string $search = null
+    ): array
     {
         $where = [];
         $params = ['limit' => $limit, 'offset' => $offset];
@@ -56,6 +63,16 @@ class Event
         if ($userId) {
             $where[] = 'e.user_id = :user_id';
             $params['user_id'] = $userId;
+        }
+
+        $riskClause = $this->riskLevelClause($riskLevel, $params, 'e');
+        if ($riskClause) {
+            $where[] = $riskClause;
+        }
+
+        if ($search) {
+            $where[] = '(e.event_type ILIKE :search OR u.external_id ILIKE :search OR u.email ILIKE :search OR ip.ip_address ILIKE :search)';
+            $params['search'] = '%' . $search . '%';
         }
 
         $whereClause = $where ? 'WHERE ' . implode(' AND ', $where) : '';
@@ -74,7 +91,12 @@ class Event
         );
     }
 
-    public function count(?string $eventType = null, ?int $userId = null): int
+    public function count(
+        ?string $eventType = null,
+        ?int $userId = null,
+        ?string $riskLevel = null,
+        ?string $search = null
+    ): int
     {
         $where = [];
         $params = [];
@@ -89,12 +111,51 @@ class Event
             $params['user_id'] = $userId;
         }
 
+        $riskClause = $this->riskLevelClause($riskLevel, $params, 'events');
+        if ($riskClause) {
+            $where[] = $riskClause;
+        }
+
+        if ($search) {
+            $where[] = '(event_type ILIKE :search OR EXISTS (SELECT 1 FROM users u WHERE u.id = events.user_id AND (u.external_id ILIKE :search OR u.email ILIKE :search)) OR EXISTS (SELECT 1 FROM ip_addresses ip WHERE ip.id = events.ip_address_id AND ip.ip_address ILIKE :search))';
+            $params['search'] = '%' . $search . '%';
+        }
+
         $whereClause = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
         return (int) $this->db->queryScalar(
             "SELECT COUNT(*) FROM events {$whereClause}",
             $params
         );
+    }
+
+    private function riskLevelClause(?string $riskLevel, array &$params, string $alias): ?string
+    {
+        if (!$riskLevel) {
+            return null;
+        }
+
+        $ranges = [
+            'low' => [0, 20],
+            'moderate' => [20, 40],
+            'elevated' => [40, 60],
+            'high' => [60, 80],
+            'critical' => [80, null],
+        ];
+
+        if (!isset($ranges[$riskLevel])) {
+            return null;
+        }
+
+        [$min, $max] = $ranges[$riskLevel];
+        $params['risk_min'] = $min;
+
+        if ($max === null) {
+            return $alias . '.risk_score >= :risk_min';
+        }
+
+        $params['risk_max'] = $max;
+        return $alias . '.risk_score >= :risk_min AND ' . $alias . '.risk_score < :risk_max';
     }
 
     public function countRecent(int $hours = 24): int

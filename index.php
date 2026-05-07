@@ -194,6 +194,51 @@ $router->post('/review/(\d+)/action', function(int $id) use ($request, $response
     (new \Sentinel\Controllers\Dashboard\ReviewController($db, $config))->action($request, $response, $id);
 });
 
+// Alerts (alias for review queue)
+$router->get('/alerts', function() use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\ReviewController($db, $config))->index($request, $response);
+});
+
+$router->get('/alerts/data', function() use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\ReviewController($db, $config))->data($request, $response);
+});
+
+$router->post('/alerts/(\d+)/action', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
+    (new \Sentinel\Controllers\Dashboard\ReviewController($db, $config))->action($request, $response, $id);
+});
+
+// Cases
+$router->get('/cases', function() use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\CasesController($db, $config))->index($request, $response);
+});
+
+$router->get('/cases/data', function() use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\CasesController($db, $config))->data($request, $response);
+});
+
+$router->get('/cases/(\d+)', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\CasesController($db, $config))->show($request, $response, $id);
+});
+
+$router->post('/cases/from-review/(\d+)', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
+    (new \Sentinel\Controllers\Dashboard\CasesController($db, $config))->createFromReview($request, $response, $id);
+});
+
+$router->post('/cases/(\d+)/resolve', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
+    (new \Sentinel\Controllers\Dashboard\CasesController($db, $config))->resolve($request, $response, $id);
+});
+
 // Rules
 $router->get('/rules', function() use ($request, $response, $db, $config) {
     (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
@@ -228,6 +273,24 @@ $router->post('/settings/api-keys/(\d+)/revoke', function(int $id) use ($request
     (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
     (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
     (new \Sentinel\Controllers\Dashboard\SettingsController($db, $config))->revokeApiKey($request, $response, $id);
+});
+
+// Integrations
+$router->get('/integrations', function() use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Controllers\Dashboard\IntegrationsController($db, $config))->index($request, $response);
+});
+
+$router->post('/integrations/(\d+)/toggle', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
+    (new \Sentinel\Controllers\Dashboard\IntegrationsController($db, $config))->toggle($request, $response, $id);
+});
+
+$router->post('/integrations/(\d+)/config', function(int $id) use ($request, $response, $db, $config) {
+    (new \Sentinel\Core\Middleware\AuthMiddleware($db))->handle($request);
+    (new \Sentinel\Core\Middleware\CsrfMiddleware())->handle($request);
+    (new \Sentinel\Controllers\Dashboard\IntegrationsController($db, $config))->update($request, $response, $id);
 });
 
 // Audit trail
