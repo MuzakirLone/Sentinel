@@ -1,0 +1,29 @@
+# Environment
+.env
+
+# Vendor
+/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp
+/tmp/
+/cache/
+
+# Node (for SDKs)
+node_modules/
+
+# Agent
+.agent/
+logs/

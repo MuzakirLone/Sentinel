@@ -1,0 +1,87 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    container_name: sentinel-app-prod
+    ports:
+      - "80:80"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=sentinel
+      - DB_USER=sentinel
+      - DB_PASS=sentinel_secret_2026
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_ENABLED=true
+      - APP_URL=http://localhost:8585
+      - APP_NAME=Sentinel
+      - APP_ENV=production
+      - APP_SECRET=change_this_to_a_random_64_char_string
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── Background Worker (processes events from Redis queue) ──
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    container_name: sentinel-worker-prod
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=sentinel
+      - DB_USER=sentinel
+      - DB_PASS=sentinel_secret_2026
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - APP_ENV=production
+      - APP_SECRET=change_this_to_a_random_64_char_string
+    command: php /var/www/html/worker.php
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: sentinel-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=sentinel
+      - POSTGRES_USER=sentinel
+      - POSTGRES_PASSWORD=sentinel_secret_2026
+    volumes:
+      - sentinel_pgdata:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel -d sentinel"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: sentinel-redis
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  sentinel_pgdata:

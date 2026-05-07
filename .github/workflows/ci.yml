@@ -1,0 +1,91 @@
+name: Sentinel Build & Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: sentinel_test
+          POSTGRES_USER: sentinel
+          POSTGRES_PASSWORD: sentinel_secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: pdo, pdo_pgsql, redis, curl, mbstring
+        coverage: xdebug
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Create environment variables
+      run: |
+        echo "APP_ENV=testing" > .env
+        echo "DB_HOST=127.0.0.1" >> .env
+        echo "DB_PORT=5432" >> .env
+        echo "DB_NAME=sentinel_test" >> .env
+        echo "DB_USER=sentinel" >> .env
+        echo "DB_PASS=sentinel_secret" >> .env
+        echo "REDIS_HOST=127.0.0.1" >> .env
+        echo "REDIS_PORT=6379" >> .env
+        echo "APP_SECRET=testing_secret_key_fixed_length_string" >> .env
+
+    - name: Setup Database
+      run: |
+        cat database/migrations/*.sql | PGPASSWORD=sentinel_secret psql -h 127.0.0.1 -U sentinel -d sentinel_test
+
+    - name: Run PHP Syntax Check
+      run: |
+        find app tests -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+
+    - name: Run PHP_CodeSniffer
+      run: ./vendor/bin/phpcs --standard=PSR12 app config
+
+    - name: Run PHPStan
+      run: ./vendor/bin/phpstan analyse app tests -l 5
+
+    - name: Run PHPUnit Tests
+      run: ./vendor/bin/phpunit --coverage-text

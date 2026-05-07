@@ -1,0 +1,48 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: sentinel-app
+    ports:
+      - "8585:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=sentinel
+      - DB_USER=sentinel
+      - DB_PASS=sentinel_secret_2026
+      - QUEUE_ENABLED=false
+      - APP_URL=http://localhost:8585
+      - APP_NAME=Sentinel
+      - APP_ENV=development
+      - APP_SECRET=change_this_to_a_random_64_char_string
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: sentinel-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=sentinel
+      - POSTGRES_USER=sentinel
+      - POSTGRES_PASSWORD=sentinel_secret_2026
+    volumes:
+      - sentinel_pgdata:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel -d sentinel"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  sentinel_pgdata:

@@ -1,0 +1,41 @@
+RewriteEngine On
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Deny access to sensitive files
+<FilesMatch "\.(env|md|sql|json|lock|yml|yaml)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow composer.json for Packagist
+<Files "composer.json">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Deny access to hidden files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow .htaccess
+<Files ".htaccess">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Deny access to app directories
+RewriteRule ^app/ - [F,L]
+RewriteRule ^config/ - [F,L]
+RewriteRule ^database/ - [F,L]
+
+# Route all requests through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
