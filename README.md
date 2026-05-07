@@ -7,10 +7,10 @@
 **Self-hosted security monitoring framework for web applications.**
 Event tracking, threat detection, and risk scoring — all from a single lightweight PHP/PostgreSQL application.
 
-[![PHP 8.1+](https://img.shields.io/badge/PHP-8.1%2B-8892BF?style=flat-square&logo=php)](https://php.net)
-[![PostgreSQL 12+](https://img.shields.io/badge/PostgreSQL-12%2B-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](docker-compose.yml)
+### [![PHP 8.1+](https://img.shields.io/badge/PHP-8.1%2B-8892BF?style=flat-square&logo=php)](https://php.net)
+### [![PostgreSQL 12+](https://img.shields.io/badge/PostgreSQL-12%2B-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
+### [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+### [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](docker-compose.yml)
 
 <details>
   <summary><b>Table of Contents</b></summary>
