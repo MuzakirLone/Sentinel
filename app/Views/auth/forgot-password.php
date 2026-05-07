@@ -17,7 +17,7 @@
 
             <?php if (!empty($errors)): ?>
                 <div class="alert alert-error">
-                    <?php foreach ($errors as $err): ?>
+                    <?php foreach ((array) $errors as $err): ?>
                         <div><?= htmlspecialchars($err) ?></div>
                     <?php endforeach; ?>
                 </div>

@@ -23,7 +23,7 @@ After a quick Docker-based installation, you can ingest events through API calls
 ## ✨ Core Features
 
 | Feature | Description |
-|---------|-------------|
+| ------- | ----------- |
 | 🔌 **SDKs & API** | Send events from any application with PHP, Python, and Node.js SDKs |
 | 📊 **Real-time Dashboard** | Monitor security events from a premium dark-mode interface |
 | 👤 **Single User View** | Analyze behavior patterns, risk scores, and activity timelines |
@@ -37,7 +37,7 @@ After a quick Docker-based installation, you can ingest events through API calls
 ## 🎯 Preset Detection Rules
 
 | Rule | Category |
-|------|----------|
+| ---- | -------- |
 | Account Takeover | Authentication |
 | Credential Stuffing | Authentication |
 | Brute Force | Authentication |
@@ -59,17 +59,17 @@ Each rule uses advanced behavioral analysis:
 - **Request Timing Entropy** — Standard deviation of request intervals detects bot-like regularity
 
 - **Request Timing Entropy** — Standard deviation of request intervals detects bot-like regularity
-
 ---
 
 ## 🔒 Security & Reliability Features
 
 Sentinel is built identically to modern enterprise infrastructure:
+
 - **Zero-Loss Background Queuing:** Background evaluations execute on fault-tolerant `BRPOPLPUSH` native Redis queuing mechanisms.
-- **Idempotency Standards:** Sentinel safely ingests identical payloads automatically recognizing and ignoring cryptographic duplicate anomalies without taxing database execution engines. 
-- **HMAC Request Validation:** Ingestion accepts cryptographic `X-Signature`, defending the application comprehensively against replay attacks and body payload tampering. 
+- **Idempotency Standards:** Sentinel safely ingests identical payloads automatically recognizing and ignoring cryptographic duplicate anomalies without taxing database execution engines.
+- **HMAC Request Validation:** Ingestion accepts cryptographic `X-Signature`, defending the application comprehensively against replay attacks and body payload tampering.
 - **Strict Fallback Hooks:** Critical environment validations are deployed immediately during framework boot. Omitted configuration secrets naturally crash the application ensuring no unsafe unencrypted instances silently linger online.
-- **Structured Telemetry (JSON):** The Core application explicitly natively surfaces logging utilizing comprehensive SIEM-parsable JSON standard outputs appending Correlation Trace IDs automatically allowing absolute interaction tracking. 
+- **Structured Telemetry (JSON):** The Core application explicitly natively surfaces logging utilizing comprehensive SIEM-parsable JSON standard outputs appending Correlation Trace IDs automatically allowing absolute interaction tracking.
 
 ---
 
@@ -86,6 +86,7 @@ Deliberate choice — not a limitation:
 ### HMAC-SHA256 API Signing
 
 Beyond simple API key authentication, Sentinel supports cryptographic request verification:
+
 - `signature = HMAC-SHA256(api_secret, timestamp + "\n" + method + "\n" + path + "\n" + body_sha256)`
 - Prevents replay attacks (timestamp drift > 5min rejected)
 - Prevents man-in-the-middle tampering (body hash verified)
@@ -94,6 +95,7 @@ Beyond simple API key authentication, Sentinel supports cryptographic request ve
 ### Redis Queue Architecture
 
 For high-throughput deployments, Sentinel decouples ingestion from processing:
+
 - `SDK → API → Redis Queue → Worker → DB + Risk Engine`
 - API returns `202 Accepted` immediately (sub-10ms latency)
 - Background worker processes events with full risk engine evaluation
@@ -106,6 +108,7 @@ For high-throughput deployments, Sentinel decouples ingestion from processing:
 ### Docker (Recommended)
 
 **Development Build (Hot-Reloading):**
+
 ```bash
 git clone https://github.com/yourusername/sentinel.git
 cd sentinel
@@ -117,6 +120,7 @@ docker-compose up -d
 ```
 
 **Production Build (Immutable Deployments):**
+
 ```bash
 # Production strictly prevents local file mapping for supreme security isolation
 docker-compose -f docker-compose.prod.yml up --build -d
@@ -133,16 +137,21 @@ docker-compose -f docker-compose.prod.yml up --build -d
 
 1. Clone repository to your web server root
 2. Import the database schema:
+
    ```bash
    psql -U sentinel -d sentinel -f database/migrations/001_initial_schema.sql
    ```
+
 3. Copy and configure environment:
+
    ```bash
    cp .env.example .env
    # Edit .env with your database credentials
    ```
+
 4. Navigate to `http://your-server/signup` to create an admin account
 5. Set up the cron job (every 10 minutes):
+
    ```bash
    */10 * * * * /usr/bin/php /path/to/sentinel/index.php /cron
    ```
@@ -199,7 +208,7 @@ curl -X POST http://localhost:8585/api/v1/events \
 }
 ```
 
-### Blacklist Check http://localhost:8585/signup
+### Blacklist Check <http://localhost:8585/signup>
 
 ```bash
 curl -X POST http://localhost:8585/api/v1/blacklist/check \
@@ -215,12 +224,14 @@ See [API.md](API.md) for complete API documentation.
 ## 🔧 SDK Integration
 
 ### PHP
+
 ```php
 $sentinel = new SentinelTracker('http://localhost:8585', 'sk_your_api_key');
 $sentinel->trackLogin('usr_12345', true, ['email' => 'user@example.com']);
 ```
 
 ### Python
+
 ```python
 from sentinel_tracker import SentinelTracker
 tracker = SentinelTracker("http://localhost:8585", "sk_your_api_key")
@@ -228,6 +239,7 @@ tracker.track_login("usr_12345", success=True, email="user@example.com")
 ```
 
 ### Node.js
+
 ```javascript
 const SentinelTracker = require('./sentinel-tracker');
 const tracker = new SentinelTracker('http://localhost:8585', 'sk_your_api_key');
@@ -298,7 +310,7 @@ Each script shows real-time risk score escalation and triggered rules. See [simu
 ## 📋 Resource Requirements
 
 | Component | Minimum | Recommended |
-|-----------|---------|-------------|
+| --------- | ------- | ----------- |
 | PostgreSQL | 512 MB RAM | 4 GB RAM |
 | Application | 128 MB RAM | 1 GB RAM |
 | Storage | ~3 GB per 1M events | — |
