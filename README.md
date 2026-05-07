@@ -243,7 +243,7 @@ curl -X POST http://localhost:8585/api/v1/events \
 }
 ```
 
-### Blacklist Check <http://localhost:8585/signup>
+### Blacklist Check (`/signup`)
 
 ```bash
 curl -X POST http://localhost:8585/api/v1/blacklist/check \
