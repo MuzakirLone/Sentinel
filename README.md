@@ -14,9 +14,9 @@ Event tracking, threat detection, and risk scoring — all from a single lightwe
 
 Sentinel is an enterprise-grade, self-hosted security framework engineered to **monitor, detect, and protect** web applications organically from threats, fraud, and account abuse in real-time.
 
-Heavily inspired by the original [Tirreno](https://github.com/Tirreno) architecture, Sentinel has been radically upgraded with Enterprise capabilities including exactly-once idempotent queue processing, native SIEM observability layers, strict multi-staged Docker immutability workloads, and comprehensive automated CI/CD DevOps testing pipelines.
+Built as a significant advancement over existing security monitoring solutions, Sentinel was designed from the ground up to demonstrate and test modern, production-ready engineering practices. It bridges the gap between theoretical security concepts and practical software architecture by implementing advanced enterprise capabilities. These include exactly-once idempotent queue processing, native SIEM observability layers, strict multi-staged Docker immutability workloads, and comprehensive automated CI/CD DevOps testing pipelines.
 
-After a quick Docker-based installation, you can ingest events through API calls and immediately access a **real-time threat dashboard**.
+After a quick Docker-based installation, the system is ready to ingest high-volume events through scalable API calls, providing immediate analytical visibility through a **real-time threat dashboard**.
 
 ---
 
