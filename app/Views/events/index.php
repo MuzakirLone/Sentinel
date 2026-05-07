@@ -18,6 +18,19 @@
                 <option value="post_create">post_create</option>
                 <option value="data_export">data_export</option>
             </select>
+            <select id="event-risk-filter" class="filter-select" onchange="Sentinel.loadEvents(1)">
+                <option value="">All Risk Levels</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="elevated">Elevated</option>
+                <option value="moderate">Moderate</option>
+                <option value="low">Low</option>
+            </select>
+            <input type="text" id="event-search" class="filter-input" placeholder="Search user, email, IP, or event type" onkeyup="if(event.key==='Enter'){Sentinel.loadEvents(1)}">
+            <select id="event-saved-search" class="filter-select" onchange="Sentinel.applySavedEventSearch(this.value)">
+                <option value="">Saved Searches</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="Sentinel.saveEventSearch()">Save Search</button>
             <button class="btn btn-ghost btn-sm" onclick="Sentinel.loadEvents(1)">↻ Refresh</button>
         </div>
 

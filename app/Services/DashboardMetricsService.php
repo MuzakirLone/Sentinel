@@ -7,6 +7,7 @@ use Sentinel\Models\Event;
 use Sentinel\Models\User;
 use Sentinel\Models\ReviewItem;
 use Sentinel\Models\RiskScore;
+use Sentinel\Models\CaseFile;
 
 /**
  * Service handling statistical aggregations and complex data fetching exclusively for Dashboard visual indicators.
@@ -32,6 +33,7 @@ class DashboardMetricsService
         $userModel      = new User($this->db);
         $reviewModel    = new ReviewItem($this->db);
         $riskScoreModel = new RiskScore($this->db);
+        $caseModel      = new CaseFile($this->db);
 
         $stats = [
             'total_events_24h'  => $eventModel->countRecent(24),
@@ -40,6 +42,9 @@ class DashboardMetricsService
             'pending_reviews'   => $reviewModel->countByStatus('pending'),
             'blocked_users'     => $userModel->countByStatus('suspended'),
             'avg_risk_score'    => round($riskScoreModel->getAverageScore(), 1),
+            'open_cases'        => $caseModel->countOpen(),
+            'sla_breaches'      => $caseModel->countSlaBreaches(),
+            'avg_mttr_hours'    => round($caseModel->getAverageMttrHours(), 1),
             
             'events_by_hour'    => $eventModel->getEventsByHour(24),
             'risk_distribution' => $eventModel->getRiskDistribution(),

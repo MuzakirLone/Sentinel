@@ -28,9 +28,11 @@ After a quick Docker-based installation, the system is ready to ingest high-volu
 | 📊 **Real-time Dashboard** | Monitor security events from a premium dark-mode interface |
 | 👤 **Single User View** | Analyze behavior patterns, risk scores, and activity timelines |
 | ⚙️ **Rule Engine** | Auto-calculate risk scores with 10 preset rules or create your own |
-| 📋 **Review Queue** | Auto-suspend accounts or flag them for manual review |
+| 🚨 **Alert Queue** | Triage high-risk detections and escalate to cases |
+| 🗂 **Case Management** | Track investigations, SLA deadlines, and resolution notes |
 | 📝 **Field Audit Trail** | Track field modifications — what changed, when, and by whom |
 | 🔍 **Blacklist API** | Real-time check endpoint for blocking malicious actors |
+| 🔗 **Integrations** | Connect to SIEMs, chat, and ticketing workflows |
 
 ---
 
@@ -57,6 +59,8 @@ Each rule uses advanced behavioral analysis:
 - **Confidence Scoring** — New users with few events get lower confidence to reduce false positives
 - **Impossible Travel Detection** — Haversine distance + velocity calculation between login locations
 - **Request Timing Entropy** — Standard deviation of request intervals detects bot-like regularity
+
+Rule configuration now includes **MITRE ATT&CK mappings** directly in the Rules dashboard to align detections with common adversary techniques.
 
 ---
 

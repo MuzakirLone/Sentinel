@@ -174,22 +174,29 @@ CREATE TABLE IF NOT EXISTS rules (
     weight          REAL DEFAULT 1.0,
     is_enabled      BOOLEAN DEFAULT TRUE,
     config          JSONB DEFAULT '{}',
+    mitre_tactic    VARCHAR(100),
+    mitre_technique VARCHAR(200),
+    mitre_technique_id VARCHAR(20),
     created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+ALTER TABLE rules ADD COLUMN IF NOT EXISTS mitre_tactic VARCHAR(100);
+ALTER TABLE rules ADD COLUMN IF NOT EXISTS mitre_technique VARCHAR(200);
+ALTER TABLE rules ADD COLUMN IF NOT EXISTS mitre_technique_id VARCHAR(20);
+
 -- Insert default rules
-INSERT INTO rules (name, slug, description, category, weight, is_enabled, config) VALUES
-('Account Takeover', 'account_takeover', 'Detects potential account takeover attempts through unusual login patterns, new device/IP combinations, and credential changes.', 'authentication', 1.5, TRUE, '{"max_new_ips_per_day": 5, "max_new_devices_per_day": 3}'),
-('Credential Stuffing', 'credential_stuffing', 'Identifies patterns of rapid failed login attempts across multiple accounts from the same IP.', 'authentication', 2.0, TRUE, '{"max_failed_logins_per_hour": 10, "max_accounts_per_ip": 5}'),
-('Bot Detection', 'bot_detection', 'Detects automated bot activity through user-agent analysis, request timing, and behavioral patterns.', 'automation', 1.5, TRUE, '{"suspicious_ua_patterns": ["bot", "crawler", "spider", "headless"]}'),
-('Content Spam', 'content_spam', 'Identifies high-frequency content posting and suspicious content patterns.', 'content', 1.0, TRUE, '{"max_posts_per_hour": 20, "min_post_interval_seconds": 5}'),
-('Multi-Accounting', 'multi_accounting', 'Detects multiple accounts created from the same IP address or device.', 'identity', 1.0, TRUE, '{"max_accounts_per_ip": 3, "max_accounts_per_device": 2}'),
-('Dormant Account', 'dormant_account', 'Flags sudden activity from accounts inactive for extended periods.', 'behavior', 0.8, TRUE, '{"dormant_days": 90}'),
-('High-Risk Region', 'high_risk_region', 'Flags logins from TOR exit nodes, VPNs, proxies, or sanctioned regions.', 'geo', 1.2, TRUE, '{"flagged_countries": ["KP", "IR", "SY"]}'),
-('Promo Abuse', 'promo_abuse', 'Detects repeated promotional code usage and referral fraud patterns.', 'fraud', 1.0, TRUE, '{"max_promos_per_user": 3}'),
-('Insider Threat', 'insider_threat', 'Monitors admin and privileged user access for unusual patterns.', 'access', 1.8, TRUE, '{"sensitive_actions": ["admin_login", "data_export", "user_delete"]}'),
-('Brute Force', 'brute_force', 'Detects excessive failed authentication attempts from a single source.', 'authentication', 2.0, TRUE, '{"max_attempts_per_minute": 5, "lockout_duration_minutes": 30}')
+INSERT INTO rules (name, slug, description, category, weight, is_enabled, config, mitre_tactic, mitre_technique, mitre_technique_id) VALUES
+('Account Takeover', 'account_takeover', 'Detects potential account takeover attempts through unusual login patterns, new device/IP combinations, and credential changes.', 'authentication', 1.5, TRUE, '{"max_new_ips_per_day": 5, "max_new_devices_per_day": 3}', 'Credential Access', 'Valid Accounts', 'T1078'),
+('Credential Stuffing', 'credential_stuffing', 'Identifies patterns of rapid failed login attempts across multiple accounts from the same IP.', 'authentication', 2.0, TRUE, '{"max_failed_logins_per_hour": 10, "max_accounts_per_ip": 5}', 'Credential Access', 'Brute Force', 'T1110'),
+('Bot Detection', 'bot_detection', 'Detects automated bot activity through user-agent analysis, request timing, and behavioral patterns.', 'automation', 1.5, TRUE, '{"suspicious_ua_patterns": ["bot", "crawler", "spider", "headless"]}', 'Reconnaissance', 'Active Scanning', 'T1595'),
+('Content Spam', 'content_spam', 'Identifies high-frequency content posting and suspicious content patterns.', 'content', 1.0, TRUE, '{"max_posts_per_hour": 20, "min_post_interval_seconds": 5}', 'Initial Access', 'Phishing', 'T1566'),
+('Multi-Accounting', 'multi_accounting', 'Detects multiple accounts created from the same IP address or device.', 'identity', 1.0, TRUE, '{"max_accounts_per_ip": 3, "max_accounts_per_device": 2}', 'Persistence', 'Create Account', 'T1136'),
+('Dormant Account', 'dormant_account', 'Flags sudden activity from accounts inactive for extended periods.', 'behavior', 0.8, TRUE, '{"dormant_days": 90}', 'Persistence', 'Valid Accounts', 'T1078'),
+('High-Risk Region', 'high_risk_region', 'Flags logins from TOR exit nodes, VPNs, proxies, or sanctioned regions.', 'geo', 1.2, TRUE, '{"flagged_countries": ["KP", "IR", "SY"]}', 'Command and Control', 'Proxy', 'T1090'),
+('Promo Abuse', 'promo_abuse', 'Detects repeated promotional code usage and referral fraud patterns.', 'fraud', 1.0, TRUE, '{"max_promos_per_user": 3}', 'Impact', 'Resource Hijacking', 'T1496'),
+('Insider Threat', 'insider_threat', 'Monitors admin and privileged user access for unusual patterns.', 'access', 1.8, TRUE, '{"sensitive_actions": ["admin_login", "data_export", "user_delete"]}', 'Collection', 'Data from Information Repositories', 'T1213'),
+('Brute Force', 'brute_force', 'Detects excessive failed authentication attempts from a single source.', 'authentication', 2.0, TRUE, '{"max_attempts_per_minute": 5, "lockout_duration_minutes": 30}', 'Credential Access', 'Brute Force', 'T1110')
 ON CONFLICT (slug) DO NOTHING;
 
 -- ═══════════════════════════════════════════════════════════
@@ -253,6 +260,65 @@ CREATE TABLE IF NOT EXISTS review_queue (
 CREATE INDEX idx_review_queue_status ON review_queue(status);
 CREATE INDEX idx_review_queue_priority ON review_queue(priority);
 CREATE INDEX idx_review_queue_user ON review_queue(user_id);
+
+-- ═══════════════════════════════════════════════════════════
+-- Investigation Cases (SOC case management)
+-- ═══════════════════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS cases (
+    id              SERIAL PRIMARY KEY,
+    title           VARCHAR(200) NOT NULL,
+    summary         TEXT,
+    status          VARCHAR(20) DEFAULT 'open',
+    priority        VARCHAR(20) DEFAULT 'medium',
+    user_id         INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    review_item_id  INTEGER REFERENCES review_queue(id) ON DELETE SET NULL,
+    created_by      INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    assigned_to     INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    sla_due_at      TIMESTAMP WITH TIME ZONE,
+    resolved_at     TIMESTAMP WITH TIME ZONE,
+    resolution_notes TEXT,
+    created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX idx_cases_status ON cases(status);
+CREATE INDEX idx_cases_priority ON cases(priority);
+CREATE INDEX idx_cases_user ON cases(user_id);
+CREATE INDEX idx_cases_created ON cases(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS case_events (
+    id              SERIAL PRIMARY KEY,
+    case_id         INTEGER REFERENCES cases(id) ON DELETE CASCADE,
+    event_id        INTEGER REFERENCES events(id) ON DELETE SET NULL,
+    note            TEXT,
+    added_by        INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX idx_case_events_case ON case_events(case_id);
+
+-- ═══════════════════════════════════════════════════════════
+-- Integrations (SIEM, chat, ticketing)
+-- ═══════════════════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS integrations (
+    id              SERIAL PRIMARY KEY,
+    name            VARCHAR(100) NOT NULL,
+    integration_type VARCHAR(50) NOT NULL UNIQUE,
+    status          VARCHAR(20) DEFAULT 'disabled',
+    config          JSONB DEFAULT '{}',
+    last_delivery_at TIMESTAMP WITH TIME ZONE,
+    created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+INSERT INTO integrations (name, integration_type, status, config) VALUES
+('Elastic SIEM', 'elastic', 'disabled', '{"endpoint": "", "index": "sentinel-alerts"}'),
+('Splunk HEC', 'splunk', 'disabled', '{"endpoint": "", "token": ""}'),
+('Generic Webhook', 'webhook', 'disabled', '{"endpoint": ""}'),
+('Slack', 'slack', 'disabled', '{"endpoint": "", "channel": "#security-alerts"}'),
+('Microsoft Teams', 'teams', 'disabled', '{"endpoint": ""}'),
+('Jira Service Management', 'jira', 'disabled', '{"endpoint": "", "project_key": ""}')
+ON CONFLICT DO NOTHING;
 
 -- ═══════════════════════════════════════════════════════════
 -- Audit Trail (field-level changes)

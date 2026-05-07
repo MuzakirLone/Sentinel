@@ -25,7 +25,7 @@ class ReviewController
         $response->view('review/index', [
             'config' => $this->config,
             'user'   => Auth::user(),
-            'page'   => 'review',
+            'page'   => 'alerts',
         ]);
     }
 

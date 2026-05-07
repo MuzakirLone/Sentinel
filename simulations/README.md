@@ -106,13 +106,23 @@ for script in brute_force credential_stuffing impossible_travel account_takeover
 done
 ```
 
+## Validation Runbook
+
+Use the simulation suite as a repeatable detection validation harness:
+
+1. Run the full set of simulations.
+2. Confirm alerts appear in **Alert Queue** with correct priorities.
+3. Escalate at least one alert into a **Case** and verify SLA timers.
+4. Review evidence timelines to validate rule triggers and MITRE mappings.
+5. Capture findings in resolution notes to close the loop on tuning.
+
 ## Observing Results
 
 After running simulations, check the Sentinel dashboard:
 
 1. **Dashboard** — Overall risk metrics and event timeline
 2. **Users** — Individual user risk scores and triggered rules
-3. **Review Queue** — Auto-created review items for high-risk users
+3. **Alert Queue** — Auto-created alerts for high-risk users
 4. **Events** — Full event log with risk scores
 5. **Audit Trail** — Credential change records from ATO simulation
 
