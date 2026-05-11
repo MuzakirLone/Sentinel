@@ -8,38 +8,38 @@ Sentinel follows a **lightweight MVC architecture** built on pure PHP without he
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                     index.php                        │
-│               (Front Controller + Router)             │
+│                     index.php                       │
+│               (Front Controller + Router)           │
 ├──────────────────┬──────────────────────────────────┤
-│   API Layer      │        Dashboard Layer            │
-│                  │                                    │
-│ EventController  │  AuthController                    │
-│ BlacklistCtrl    │  DashboardController               │
-│                  │  UsersController                   │
-│                  │  EventsController                  │
-│                  │  ReviewController                  │
-│                  │  CasesController                   │
-│                  │  RulesController                   │
-│                  │  IntegrationsController            │
-│                  │  SettingsController                │
-│                  │  AuditController                   │
+│   API Layer      │        Dashboard Layer           │
+│                  │                                  │
+│ EventController  │  AuthController                  │
+│ BlacklistCtrl    │  DashboardController             │
+│                  │  UsersController                 │
+│                  │  EventsController                │
+│                  │  ReviewController                │
+│                  │  CasesController                 │
+│                  │  RulesController                 │
+│                  │  IntegrationsController          │
+│                  │  SettingsController              │
+│                  │  AuditController                 │
 ├──────────────────┴──────────────────────────────────┤
-│                   Risk Engine                         │
-│                                                       │
+│                   Risk Engine                       │
+│                                                     │
 │  ┌────────────┐  ┌──────────────┐  ┌──────────────┐ │
 │  │ RiskEngine │──│ 10 Rules     │──│ ScoreCalc    │ │
 │  └────────────┘  └──────────────┘  └──────────────┘ │
-├───────────────────────────────────────────────────────┤
-│                   Model Layer                         │
-│  User │ Event │ Session │ Device │ IpAddress │ ...    │
-├───────────────────────────────────────────────────────┤
-│                   Core Framework                      │
-│  Router │ Database │ Request │ Response │ Auth        │
-│  Middleware: AuthMW │ ApiKeyMW │ CorsMW │ RateMW      │
-├───────────────────────────────────────────────────────┤
-│              PostgreSQL Database                      │
-│  14 tables with indexes and constraints               │
-└───────────────────────────────────────────────────────┘
+├─────────────────────────────────────────────────────┤
+│                   Model Layer                       │
+│  User │ Event │ Session │ Device │ IpAddress │ ...  │
+├─────────────────────────────────────────────────────┤
+│                   Core Framework                    │
+│  Router │ Database │ Request │ Response │ Auth      │
+│  Middleware: AuthMW │ ApiKeyMW │ CorsMW │ RateMW    │
+├─────────────────────────────────────────────────────┤
+│              PostgreSQL Database                    │
+│  14 tables with indexes and constraints             │
+└─────────────────────────────────────────────────────┘
 ```
 
 ## Event Processing Pipeline
