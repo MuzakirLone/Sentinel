@@ -145,7 +145,7 @@ For high-throughput deployments, Sentinel decouples ingestion from processing:
 **Development Build (Hot-Reloading):**
 
 ```bash
-git clone https://github.com/yourusername/sentinel.git
+git clone https://github.com/MuzakirLone/sentinel.git
 cd sentinel
 
 # Start development services
