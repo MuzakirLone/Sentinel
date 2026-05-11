@@ -151,7 +151,8 @@ cd sentinel
 # Start development services
 docker-compose up -d
 
-# Navigate to  to configure Admin
+# Configure Admin acess at
+https://localhost:8585/signup
 ```
 
 **Production Build (Immutable Deployments):**
