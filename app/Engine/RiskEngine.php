@@ -340,7 +340,7 @@ class RiskEngine
             if (isset($event['ip_address_id'])) {
                 $knownIp = $this->db->queryScalar(
                     'SELECT COUNT(*) FROM events WHERE user_id = :user_id AND ip_address_id = :ip_id AND id != :event_id',
-                    ['user_id' => $userId, 'ip_address_id' => $event['ip_address_id'], 'event_id' => $event['id'] ?? 0]
+                    ['user_id' => $userId, 'ip_id' => $event['ip_address_id'], 'event_id' => $event['id'] ?? 0]
                 );
                 $context['is_new_ip_for_user'] = ((int) $knownIp === 0);
             }

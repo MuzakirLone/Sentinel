@@ -34,4 +34,35 @@ class RiskEngineTest extends TestCase
 
         $this->assertEmpty($results);
     }
+
+    public function testBuildContextUsesIpIdParameterForKnownIpQuery()
+    {
+        $db = $this->createMockDatabase();
+
+        $db->method('query')->willReturn([]);
+        $db->method('queryOne')->willReturnCallback(function (string $sql, array $params = []) {
+            if (str_contains($sql, 'FROM ip_addresses WHERE id = :id')) {
+                return ['id' => $params['id'] ?? 0, 'country' => 'US'];
+            }
+            return null;
+        });
+        $db->method('queryScalar')->willReturnCallback(function (string $sql, array $params = []) {
+            if (str_contains($sql, 'ip_address_id = :ip_id') && str_contains($sql, 'id != :event_id')) {
+                if (!array_key_exists('ip_id', $params)) {
+                    throw new \InvalidArgumentException('Missing ip_id bind parameter');
+                }
+            }
+            return 0;
+        });
+
+        $engine = new RiskEngine($db);
+
+        $ref = new \ReflectionClass($engine);
+        $method = $ref->getMethod('buildContext');
+        $method->setAccessible(true);
+
+        $context = $method->invoke($engine, ['id' => 10, 'ip_address_id' => 99], ['id' => 1]);
+
+        $this->assertIsArray($context);
+    }
 }
