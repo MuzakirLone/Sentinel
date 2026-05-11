@@ -152,7 +152,7 @@ cd sentinel
 docker-compose up -d
 
 # Configure Admin acess at
-https://localhost:8585/signup
+http://localhost:8585/signup
 ```
 
 **Production Build (Immutable Deployments):**
