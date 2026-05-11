@@ -1,7 +1,7 @@
 # Sentinel
 
 <div align="center">
-  <img src="assets/logo.png" alt="Sentinel Logo" width="500">
+  <img src="assets/logo.png" alt="Sentinel Logo" width="700">
 </div>
 
 **Self-hosted security monitoring framework for web applications.**
