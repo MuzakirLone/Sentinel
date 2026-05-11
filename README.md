@@ -22,6 +22,7 @@ Event tracking, threat detection, and risk scoring — all from a single lightwe
     <li><a href="#preset-detection-rules">Preset Detection Rules</a></li>
     <li><a href="#security--reliability-features">Security & Reliability Features</a></li>
     <li><a href="#architecture-decision-records">Architecture Decision Records</a></li>
+    <li><a href="#deep-dive-review--career-mapping">Deep Dive Review & Career Mapping</a></li>
     <li><a href="#quick-start">Quick Start</a></li>
     <li><a href="#api-usage">API Usage</a></li>
     <li><a href="#sdk-integration">SDK Integration</a></li>
@@ -134,6 +135,14 @@ For high-throughput deployments, Sentinel decouples ingestion from processing:
 - API returns `202 Accepted` immediately (sub-10ms latency)
 - Background worker processes events with full risk engine evaluation
 - Graceful fallback to synchronous mode if Redis is unavailable
+
+---
+
+
+<a id="deep-dive-review--career-mapping"></a>
+## 🧭 Deep Dive Review & Career Mapping
+
+A complete reviewer-facing walkthrough is available in [`DEEP_DIVE_REVIEW.md`](DEEP_DIVE_REVIEW.md). It explains Sentinel's architecture, event lifecycle, detection logic, data model, SOC workflow, security controls, review checklist, improvement roadmap, demo script, and how to present the project for cybersecurity analyst, cybersecurity engineer, SOC analyst, and internship opportunities.
 
 ---
 

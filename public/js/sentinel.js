@@ -11,6 +11,9 @@ const Sentinel = {
         this.initNavigation();
         this.initModals();
         this.initTabs();
+        this.initCommandPalette();
+        this.initMobileShell();
+        this.initInteractiveSurfaces();
         
         // Auto-refresh for dashboard
         if (document.getElementById('dashboard-page')) {
@@ -57,6 +60,80 @@ const Sentinel = {
             if (item.getAttribute('href') === window.location.pathname) {
                 item.classList.add('active');
             }
+        });
+    },
+
+    initCommandPalette() {
+        const palette = document.getElementById('command-palette');
+        const input = document.getElementById('command-input');
+        const items = Array.from(document.querySelectorAll('.command-item'));
+        const openers = document.querySelectorAll('[data-command-open]');
+
+        if (!palette || !input) return;
+
+        const openPalette = () => {
+            palette.classList.add('active');
+            palette.setAttribute('aria-hidden', 'false');
+            input.value = '';
+            items.forEach(item => item.classList.remove('is-hidden'));
+            setTimeout(() => input.focus(), 20);
+        };
+
+        const closePalette = () => {
+            palette.classList.remove('active');
+            palette.setAttribute('aria-hidden', 'true');
+        };
+
+        openers.forEach(opener => opener.addEventListener('click', openPalette));
+
+        document.addEventListener('keydown', (e) => {
+            const isCommandK = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k';
+            if (isCommandK) {
+                e.preventDefault();
+                palette.classList.contains('active') ? closePalette() : openPalette();
+            }
+            if (e.key === 'Escape') closePalette();
+        });
+
+        palette.addEventListener('click', (e) => {
+            if (e.target === palette) closePalette();
+        });
+
+        input.addEventListener('input', () => {
+            const query = input.value.trim().toLowerCase();
+            items.forEach(item => {
+                const haystack = `${item.textContent} ${item.dataset.commandKeywords || ''}`.toLowerCase();
+                item.classList.toggle('is-hidden', query && !haystack.includes(query));
+            });
+        });
+    },
+
+    initMobileShell() {
+        const toggle = document.querySelector('[data-mobile-menu]');
+        const scrim = document.querySelector('[data-mobile-scrim]');
+        if (!toggle || !scrim) return;
+
+        const close = () => {
+            document.body.classList.remove('sidebar-open');
+            scrim.classList.remove('active');
+        };
+
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('sidebar-open');
+            scrim.classList.toggle('active', document.body.classList.contains('sidebar-open'));
+        });
+        scrim.addEventListener('click', close);
+        document.querySelectorAll('.sidebar .nav-item').forEach(item => item.addEventListener('click', close));
+    },
+
+    initInteractiveSurfaces() {
+        const surfaces = document.querySelectorAll('.kpi-card, .hero-panel, .card');
+        surfaces.forEach(surface => {
+            surface.addEventListener('mousemove', (e) => {
+                const rect = surface.getBoundingClientRect();
+                surface.style.setProperty('--pointer-x', `${e.clientX - rect.left}px`);
+                surface.style.setProperty('--pointer-y', `${e.clientY - rect.top}px`);
+            });
         });
     },
 
@@ -171,11 +248,39 @@ const Sentinel = {
     updateKPI(id, value) {
         const el = document.getElementById(id);
         if (el) {
+            const numericValue = Number(value);
             const formatted = typeof value === 'number' ?
                 (value >= 1000 ? (value / 1000).toFixed(1) + 'k' : value.toString()) :
                 (value || '0');
-            el.textContent = formatted;
+
+            if (Number.isFinite(numericValue) && numericValue >= 0) {
+                const previous = Number(el.dataset.value || 0);
+                el.dataset.value = numericValue;
+                this.animateNumber(el, previous, numericValue, formatted);
+            } else {
+                el.textContent = formatted;
+            }
         }
+    },
+
+    animateNumber(el, from, to, finalText) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            el.textContent = finalText;
+            return;
+        }
+
+        const start = performance.now();
+        const duration = 520;
+        const formatter = (value) => value >= 1000 ? (value / 1000).toFixed(1) + 'k' : Math.round(value).toString();
+
+        const step = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = progress === 1 ? finalText : formatter(from + (to - from) * eased);
+            if (progress < 1) requestAnimationFrame(step);
+        };
+
+        requestAnimationFrame(step);
     },
 
     renderRecentEvents(events) {
