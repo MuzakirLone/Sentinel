@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
+    <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" data-mobile-menu>☰</button>
+    <div class="mobile-scrim" data-mobile-scrim></div>
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -80,6 +82,11 @@
             </nav>
 
             <div class="sidebar-footer">
+                <button class="command-trigger" type="button" data-command-open aria-label="Open command center">
+                    <span>⌘</span>
+                    <strong>Command Center</strong>
+                    <kbd>Ctrl K</kbd>
+                </button>
                 <div class="sidebar-user">
                     <div class="avatar"><?= strtoupper(substr($user['name'] ?? 'A', 0, 1)) ?></div>
                     <div class="user-info">
@@ -98,6 +105,55 @@
         <main class="main-content">
             <?= $pageContent ?>
         </main>
+    </div>
+
+    <div class="command-palette" id="command-palette" aria-hidden="true">
+        <div class="command-panel" role="dialog" aria-modal="true" aria-labelledby="command-title">
+            <div class="command-search">
+                <span class="command-search-icon">⌕</span>
+                <input id="command-input" type="search" placeholder="Search pages, workflows, and quick actions..." autocomplete="off">
+                <kbd>Esc</kbd>
+            </div>
+            <div class="command-meta" id="command-title">Navigate Sentinel</div>
+            <div class="command-list" id="command-list">
+                <a href="/dashboard" class="command-item" data-command-keywords="overview metrics home dashboard">
+                    <span class="command-icon">◫</span>
+                    <span><strong>Dashboard</strong><small>Live overview, charts, KPIs</small></span>
+                </a>
+                <a href="/alerts" class="command-item" data-command-keywords="triage review alerts queue pending">
+                    <span class="command-icon">⚠</span>
+                    <span><strong>Alerts</strong><small>Triage high-risk detections</small></span>
+                </a>
+                <a href="/cases" class="command-item" data-command-keywords="cases investigations incidents sla">
+                    <span class="command-icon">▦</span>
+                    <span><strong>Cases</strong><small>Investigations and SLA tracking</small></span>
+                </a>
+                <a href="/events" class="command-item" data-command-keywords="events logs telemetry search">
+                    <span class="command-icon">ϟ</span>
+                    <span><strong>Events</strong><small>Raw telemetry and risk context</small></span>
+                </a>
+                <a href="/users" class="command-item" data-command-keywords="users accounts identity risk timeline">
+                    <span class="command-icon">◎</span>
+                    <span><strong>Users</strong><small>Entity profiles and behavior</small></span>
+                </a>
+                <a href="/rules" class="command-item" data-command-keywords="rules detections mitre tuning">
+                    <span class="command-icon">◈</span>
+                    <span><strong>Rules</strong><small>Detection coverage and tuning</small></span>
+                </a>
+                <a href="/integrations" class="command-item" data-command-keywords="integrations siem webhook slack ticketing">
+                    <span class="command-icon">↗</span>
+                    <span><strong>Integrations</strong><small>SIEM, chat, and ticketing outputs</small></span>
+                </a>
+                <a href="/audit" class="command-item" data-command-keywords="audit history changes accountability compliance">
+                    <span class="command-icon">◷</span>
+                    <span><strong>Audit Trail</strong><small>Field history and accountability</small></span>
+                </a>
+                <a href="/settings" class="command-item" data-command-keywords="settings keys configuration security profile">
+                    <span class="command-icon">⚙</span>
+                    <span><strong>Settings</strong><small>API keys and workspace controls</small></span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <script src="/public/js/charts.js"></script>

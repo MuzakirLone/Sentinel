@@ -1,10 +1,35 @@
 <div id="dashboard-page">
-    <div class="page-header">
-        <h2>Dashboard</h2>
-        <div class="subtitle">Real-time security overview <span class="pulse" style="margin-left:8px"></span> <span style="font-size:0.75rem;color:var(--text-muted)">Live</span></div>
+    <div class="page-header page-header-modern">
+        <div>
+            <div class="eyebrow">Security Operations Center</div>
+            <h2>Command Dashboard</h2>
+            <div class="subtitle">Real-time security overview <span class="pulse" style="margin-left:8px"></span> <span style="font-size:0.75rem;color:var(--text-muted)">Live</span></div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost btn-sm" type="button" data-command-open>⌘ Command</button>
+            <a href="/events" class="btn btn-primary btn-sm">Review Events</a>
+        </div>
     </div>
 
     <div class="page-body">
+        <section class="hero-panel animate-in">
+            <div class="hero-copy">
+                <span class="status-pill"><span class="pulse"></span> Live detection pipeline</span>
+                <h1>Investigate risk faster with one clean analyst workspace.</h1>
+                <p>Jump from signal to user, IP, rule result, and case workflow without losing context.</p>
+                <div class="hero-actions">
+                    <a href="/alerts" class="btn btn-primary">Open Triage Queue</a>
+                    <a href="/cases" class="btn btn-ghost">View Cases</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-label="Detection pipeline overview">
+                <div class="pipeline-step active"><span>01</span><strong>Ingest</strong><small>API + SDK events</small></div>
+                <div class="pipeline-line"></div>
+                <div class="pipeline-step"><span>02</span><strong>Score</strong><small>Rules + context</small></div>
+                <div class="pipeline-line"></div>
+                <div class="pipeline-step"><span>03</span><strong>Respond</strong><small>Alerts + cases</small></div>
+            </div>
+        </section>
         <!-- KPI Cards -->
         <div class="kpi-grid">
             <div class="kpi-card kpi-primary animate-in">
