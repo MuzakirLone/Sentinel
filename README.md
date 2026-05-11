@@ -195,7 +195,7 @@ docker-compose -f docker-compose.prod.yml up --build -d
    # Edit .env with your database credentials
    ```
 
-4. Navigate to `http://your-server/signup` to create an admin account
+4. Navigate to `http://localhost:8585/signup` to create an admin account
 5. Set up the cron job (every 10 minutes):
 
    ```bash
